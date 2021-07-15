@@ -1,7 +1,6 @@
 /* eslint-disable max-statements, complexity, ember/no-new-mixins */
 import Mixin from '@ember/object/mixin';
 import { debug } from '@ember/debug';
-import { set } from '@ember/object';
 import { A } from '@ember/array';
 import { classify, dasherize, decamelize } from '@ember/string';
 
@@ -125,7 +124,7 @@ function parseName(fullName) {
 	}
 
 	const fullNameWithoutType = name;
-	const root = this.get('namespace');
+	const root = this.namespace;
 	let resolveMethodName, moduleName;
 
 	if (!prefix) {
@@ -138,7 +137,7 @@ function parseName(fullName) {
 			prefix = name;
 			moduleName = this.findModule(name, type, 'main');
 		} else {
-			const namespaces = this.get('namespace.namespaces') || this.get('namespaces');
+			const namespaces = this.namespace?.namespaces || this.namespaces;
 
 			namespaces.some((namespace) => {
 				const entry = this.findModule(namespace, type, name);
@@ -161,7 +160,7 @@ function parseName(fullName) {
 		resolveMethodName = `resolve${classify(type)}`;
 	}
 
-	if (!this.get(resolveMethodName)) {
+	if (!this[resolveMethodName]) {
 		resolveMethodName = 'resolveOther';
 	}
 
@@ -180,7 +179,7 @@ function parseName(fullName) {
 
 function reopenModule(module) {
 	const regexp = /^([^/]+)\/reopens\//;
-	const namespaces = this.get('namespace.namespaces') || this.get('namespaces');
+	const namespaces = this.namespace?.namespaces || this.namespaces;
 	const moduleName = module._moduleName;
 
 	Object.keys(requirejs.entries).forEach((entry) => {
@@ -268,14 +267,14 @@ export default Mixin.create({
 
 		// Fallback code
 
-		if (!this.get('pluralizedTypes')) {
-			this.set('pluralizedTypes', {
+		if (!this.pluralizedTypes) {
+			this.pluralizedTypes = {
 				config: 'config'
-			});
+			};
 		}
 
-		if (!this.get('namespaces')) {
-			this.set('namespaces', A());
+		if (!this.namespaces) {
+			this.namespaces = A();
 		}
 
 		this._normalizeCache = {};
@@ -349,7 +348,7 @@ export default Mixin.create({
 	 * @return Object
 	 */
 	knownForType(type) {
-		const namespaces = this.get('namespace.namespaces') || this.get('namespaces');
+		const namespaces = this.namespace?.namespaces || this.namespaces;
 		const items = {};
 
 		if (this._typeCache[type]) {
@@ -448,7 +447,14 @@ export default Mixin.create({
 	 * @return String
 	 */
 	pluralize(type) {
-		return this.get(`pluralizedTypes.${type}`) || set(this, `pluralizedTypes.${type}`, `${type}s`);
+		let result = this.pluralizedTypes[type];
+
+		if (!result) {
+			result = `${type}s`;
+			this.pluralizedTypes[type] = result;
+		}
+
+		return result;
 	},
 
 	/**
