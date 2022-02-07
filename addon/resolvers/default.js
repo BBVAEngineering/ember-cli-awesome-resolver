@@ -1,7 +1,6 @@
 /* global requirejs, require */
 /* eslint-disable ember/classic-decorator-hooks */
 import Resolver from 'ember-resolver/resolver';
-import { debug } from '@ember/debug';
 import { A } from '@ember/array';
 import { classify, dasherize, decamelize } from '@ember/string';
 
@@ -180,38 +179,8 @@ function parseName(fullName) {
   };
 }
 
-function reopenModule(module) {
-  const regexp = /^([^/]+)\/reopens\//;
-  const namespaces = this.namespace?.namespaces || this.namespaces;
-  const moduleName = module._moduleName;
-
-  Object.keys(requirejs.entries).forEach((entry) => {
-    const matches = regexp.exec(entry);
-
-    if (matches && namespaces.includes(matches[1])) {
-      const reopen = this._loadModule(entry);
-
-      if (reopen && moduleName === reopen.for) {
-        if (reopen.reopen) {
-          debug(`found reopen '${entry}' for '${moduleName}'`);
-          module.reopen(...reopen.reopen);
-        }
-
-        if (reopen.reopenClass) {
-          debug(`found class reopen '${entry}' for '${moduleName}'`);
-          module.reopenClass(...reopen.reopenClass);
-        }
-      }
-    }
-  });
-}
-
 function resolveModule(parsedName) {
   const module = this._loadModule(parsedName.moduleName);
-
-  if (module && module.isClass) {
-    this._reopenModule(module);
-  }
 
   return module || this._super(parsedName);
 }
@@ -583,12 +552,4 @@ export default class AwesomeResolver extends Resolver {
    * @return Object
    */
   _loadModule = loadModule;
-
-  /**
-   * Reopen module.
-   *
-   * @method _reopenModule
-   * @param {Object} module
-   */
-  _reopenModule = reopenModule;
 }
