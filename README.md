@@ -27,16 +27,15 @@ This resolver allows to use any amd module namespace defined in the configuratio
 
 ## Installation
 
-* `ember install ember-cli-awesome-resolver`
+- `ember install ember-cli-awesome-resolver`
 
-Contributing
-------------------------------------------------------------------------------
+## Contributing
 
 ## Usage
 
-* Define an array with the namespaces to use in `config/environment.js`
-* Import the resolver in `app/app.js` and create an instance passing the namespaces and the modules configuration
-* Use the resolver when creating the ember application
+- Define an array with the namespaces to use in `config/environment.js`
+- Import the resolver in `app/app.js` and create an instance passing the namespaces and the modules configuration
+- Use the resolver when creating the ember application
 
 ### Example
 

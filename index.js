@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-	name: 'ember-cli-awesome-resolver'
+  name: require('./package').name,
 };
