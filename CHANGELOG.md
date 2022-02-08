@@ -1,3 +1,16 @@
+# [5.0.0](https://github.com/BBVAEngineering/ember-cli-awesome-resolver/compare/v4.0.1...v5.0.0) (2022-02-08)
+
+
+### Features
+
+* remove reopen module feature ([7585104](https://github.com/BBVAEngineering/ember-cli-awesome-resolver/commit/75851044405a7ab262d14ab765f019ac8276ecdf))
+* update to ember 4.1 ([31da989](https://github.com/BBVAEngineering/ember-cli-awesome-resolver/commit/31da989cec9633e557b58e194d06761d81335f13))
+
+
+### BREAKING CHANGES
+
+* remove reopen module feature
+
 ## [4.0.1](https://github.com/BBVAEngineering/ember-cli-awesome-resolver/compare/v4.0.0...v4.0.1) (2021-07-15)
 
 ### Bug Fixes
